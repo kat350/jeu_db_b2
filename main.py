@@ -1,8 +1,7 @@
-
+# importer random
 # initier la db
 # heros = liste persos dans la db
 # monstres = liste monstres dans la db
-
 
 # main :
     # afficher le menu
@@ -13,18 +12,21 @@
 # Afficher un menu
     # clear
     # Afficher entête 
+    # afficher option
+
+# Afficcher option
     # option 1 = jouer
-    # option 2 = Voir les 3 meilleurs scores
+    # option 2 = classement
     # option 3 = Quitter
 
 # get_choice(min, max):
     # choix = false
     # Tant que choix est faux
-        # demander choix
-        # verifier le choix
-    # return choice
+        # demander choice
+        # choix = is_valid_choice(choice)
+    # return choix
 
-# get_valid_choice(choice, min, max) :
+# is_valid_choice(choice, min, max) :
     # Si le choix est un chiffre
         # si le choix n'est pas dans l'intervalle min < choix <= max :
             # retourner false
@@ -42,15 +44,16 @@
         # fermer jeu TODO:
 
 # Jeu : 
+    # get_user_name() TODO
     # Créé une equipe de 3 heros
-    # Lancer une vague
+    # Lancer un combat
 
 # créer_equipe :
     # team = []
     # definir la taille de l'equipe
     # tant que l'equipe n'est pas complete
-        # Afficher liste persos
-        # recuperer un choix dans la liste de persos
+        # Afficher liste persos_actuels
+        # recuperer un choix valide
         # caractère = perso de l'index choix-1
         # ajouter le caractère à la team
         # le supprimer le caractère de la liste persos_actuels
@@ -65,26 +68,45 @@
         # i+= 1
     # retourner persos_actuels
 
-# Vague(team) :
+# combat(team) :
     # team = team_alive
+    # vague = 0
     # Tant que l'equipe est en vie :
-        # Choisir un monstre aléatoirement parmis la liste de monstres TODO
-        # Afficher le nom du monstre et ses infos TODO
-        # Tant que le monstre est en vie :
-            # Les persos vivant attaquent le monstre
-            # Vérifier que le monstre est encore en vie
-            # Monstre attaque (seulement si il est mort !)
-            # Vérifier que le perso est encore en vie
-    # Retourner le score
+        # lancer round()
+        # si equipe en vie
+            # ajouter 1 a vague
 
+
+# round :
+    # Choisir un monstre aléatoirement parmis la liste de monstres 
+    # Afficher le nom du monstre et ses infos TODO
+    # Tant que le monstre est en vie et equipe en vie  :
+        # tour de combat
+    
+    # si equipe est en vie
+    # return true
+
+# get_random_monster
+    # monster = choisir aleatoirement un monstre dans monstres
+    # retourner monster
+
+# print_monster_name(monster) :
+    # 
+
+
+# tour de combat :
+    # recuperer les persos vivant
+    # Les persos vivant attaquent le monstre 
+    # Vérifier que le monstre est encore en vie
+    # Si monstre en vie
+        # Monstre attaque 
 
 # Verifier_pv_monstre :
     # Si les pv du monstre sont positif
         # Retourner pv du monstre
     # Sinon 
-        # Ajouter 1 au score 
-        # retourner le score
-        # break ?
+        # retourner que le monstre est mort
+
 
 # Verifier_pv_perso :
     # Si les pv du perso sont positif

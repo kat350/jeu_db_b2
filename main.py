@@ -1,4 +1,4 @@
-# 1. Avoir une liste de persos et monstre enregistrer dans la db
+
 # initier la db
 
 # Afficher un menu
@@ -9,15 +9,18 @@
     # recuperer choix valide 
     # Lancer l'option associer au choix 
 
-# get_valid_choice(min, max) :
+# get_choice(min, max):
+    # demander choix
+    # return choice
 
-    # demander d'entrer un choix
+# get_valid_choice(choice, min, max) :
     # Si l'entrer est un chiffre
         # Tant que le choix n'est pas dans l'intervalle min < choix <= max
-            # demander d'entrer un choix
+            # get_choice()
         # retourner le choix
     #sinon 
         # afficher "Vueillez entrer un chiffre"
+
 
 # Jeu : 
     # team = []

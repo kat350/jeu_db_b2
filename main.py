@@ -61,8 +61,8 @@ def run_option(choice):
 
 def play():
     username = get_user_name()
-    create_team()
-    wave = start_battle()
+    team = create_team()
+    wave = start_battle(team)
     save_data(wave, username)
 
 def get_user_name():
@@ -100,26 +100,24 @@ def display_list_heros():
     i = 1
     for hero in available_heroes:
         print(f"{i} : ")
-        print(f"{hero['name']}, ATK: {hero['ATK']}, DEF: {hero['DEF']}, PV: ")
+        print(f"{hero['name']}, ATK: {hero['ATK']}, DEF: {hero['DEF']}, PV: {hero['PV']}")
+        i += 1
     return available_heroes
 
-# Afficher liste persos :
-    # persos_dispos = heros
-    # i = 1
-    # Pour chaque perso dans persos
-        # afficher i
-        # afficher nom, atk, def, pv du perso
-        # i+= 1
-    # retourner persos_dispos
+def start_battle(team):
+    wave = 0
+    while team is True:
+        win = start_round(team)
+        if win:
+            wave += 1
+    return wave
 
-# combat(team) :
-    # vague = 0
-    # Tant que team_alive est vraie :
-        # lancer round()
-        # si equipe en vie
-            # ajouter 1 a vague
-    # retourner vague
-
+def start_round(team):
+    team_alive = team_alive(team)
+    monster = get_random_monster()
+    print(f"{monster['name']} apparait ! ATK: {monster['ATK']}, DEF: {monster['DEF']}, PV: {monster['PV']}")
+    while monster['PV'] and len(team_alive()) > 0 :
+        combat_turn()
 
 # round :
     # Choisir un monstre aléatoirement parmis la liste de monstres 
@@ -128,7 +126,7 @@ def display_list_heros():
         # tour de combat
     
     # si equipe est en vie
-    # return true
+        # return true
 
 # get_random_monster
     # monster = choisir aleatoirement un monstre dans monstres
@@ -175,13 +173,14 @@ def display_list_heros():
     # degat = atk attaquant - def opposant 
     # pv opposant -= degat
 
-# team_alive() :
+# team_alive(team) :
     # team_alive = []
     # Pour chaque perso dans team
     # Si pv perso <= 0
         # continuer
     # Sinon :
         # ajouter a team_alive
+    # return team_alive
 
 # Display_top_three
     # recuperer le classement trier par score 

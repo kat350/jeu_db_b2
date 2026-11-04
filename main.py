@@ -1,4 +1,6 @@
 # importer random
+# importer sys
+
 # initier la db
 # heros = liste persos dans la db
 # monstres = liste monstres dans la db
@@ -8,11 +10,14 @@
     # recuperer choix 
     # Lancer l'option associer au choix  
 
-
 # Afficher un menu
     # clear
     # Afficher entête 
     # afficher option
+
+# Display_header
+    # game_name = ""
+    # affficher f"Bienvenue sur {game_name}"
 
 # Afficcher option
     # option 1 = jouer
@@ -39,14 +44,32 @@
     # si option 1 
         # lancer jeu
     # si option 2
-        # Montrer score TODO:
+        # Montrer classement 
     # si option 3 
-        # fermer jeu TODO:
+        # fermer jeu 
 
 # Jeu : 
-    # get_user_name() TODO
+    # get_user_name() 
     # Créé une equipe de 3 heros
     # Lancer un combat
+    # Enregistrer les données (vague + pseudo) 
+
+# get_user_name :
+    # input_pseudo = false
+    # Tant que input_pseudo est faux 
+        # pseudo = Demander d'entrer un pseudo 
+        # input_pseudo = Vérifier que l'entré soit valide
+    # retourner pseudo
+
+# is_valid_input(pseudo):
+    # Si l'input est un chiffre 
+        # Demander d'entrer un nom
+        # retourner false
+    # Si la taille de l'input est < 3 et > 10
+        # demander un nom de minimum 3 lettre et maximum 10 lettres
+        # retourner false
+    # Sinon 
+        # retourner True
 
 # créer_equipe :
     # team = []
@@ -69,17 +92,17 @@
     # retourner persos_actuels
 
 # combat(team) :
-    # team = team_alive
     # vague = 0
-    # Tant que l'equipe est en vie :
+    # Tant que team_alive est vraie :
         # lancer round()
         # si equipe en vie
             # ajouter 1 a vague
+    # retourner vague
 
 
 # round :
     # Choisir un monstre aléatoirement parmis la liste de monstres 
-    # Afficher le nom du monstre et ses infos TODO
+    # Afficher le nom du monstre et ses infos 
     # Tant que le monstre est en vie et equipe en vie  :
         # tour de combat
     
@@ -89,6 +112,9 @@
 # get_random_monster
     # monster = choisir aleatoirement un monstre dans monstres
     # retourner monster
+
+# display_info_monster:
+    # Afficher nom, atk, def, pv du monstre
 
 # print_monster_name(monster) :
     # 
@@ -116,11 +142,40 @@
         # Supprimer le perso de team_alive
 
 # Persos_attaque :
+    
     # Pour tous les persos parmis team_alive
-        # degat = atk du perso - defense du monstre
-        # Pv du monstre -= degat
+        # attaque(hero, monstre)
 
 # monstre_attaque :
     # choisir aléatoirement le perso a attaquer
-    # degat = atk du monstre - defense du perso
-    # pv du perso -= degat
+    # attaque(monstre, perso_aleatoire)
+
+# attaque(attaquant, opposant) :
+    # degat = atk attaquant - def opposant 
+    # pv opposant -= degat
+
+# team_alive() :
+    # team_alive = []
+    # Pour chaque perso dans team
+    # Si pv perso <= 0
+        # continuer
+    # Sinon :
+        # ajouter a team_alive
+
+# Display_top_three
+    # recuperer le classement trier par score 
+    # afficher les trois premiers de la liste
+
+# get_leaderboard
+    # recuperer le classement dans la db
+    # trier le classement par score TODO ?
+
+# close_game
+    # sys.exit()
+
+# Enregistrer les données
+    # Enregistrer player
+    # inserer dans la db
+
+# New_player(pseudo, vague)
+    # player = {"name" = pseudo, "score" = vague}

@@ -1,95 +1,113 @@
-# importer random
-# importer sys
+import random
+import sys
+import os
 
-# initier la db
-# heros = liste persos dans la db
-# monstres = liste monstres dans la db
+from pymongo import MongoClient
 
-# main :
-    # afficher le menu
-    # recuperer choix 
-    # Lancer l'option associer au choix  
+client = MongoClient("mongodb://localhost:27017/")
+db = client["jeu"]
 
-# Afficher un menu
-    # clear
-    # Afficher entête 
-    # afficher option
+def import_heros() :
+    heros = db["persos"]
 
-# Display_header
-    # game_name = ""
-    # affficher f"Bienvenue sur {game_name}"
+def import_monsters():
+    monsters = db["monstres"]
 
-# Afficcher option
-    # option 1 = jouer
-    # option 2 = classement
-    # option 3 = Quitter
+def main():
+    display_menu()
+    choice = get_choice(1,3)
+    run_option(choice)
 
-# get_choice(min, max):
-    # choix = false
-    # Tant que choix est faux
-        # demander choice
-        # choix = is_valid_choice(choice)
-    # return choix
+def clear_console() :
+     os.system('cls' if os.name == 'nt' else 'clear')
 
-# is_valid_choice(choice, min, max) :
-    # Si le choix est un chiffre
-        # si le choix n'est pas dans l'intervalle min < choix <= max :
-            # retourner false
-        # retourner True
-    #sinon 
-        # afficher "Vueillez entrer un chiffre"
-        # return false
+def display_menu():
+    clear_console()
+    display_header()
+    display_option()
 
-# Lancer otpion :
-    # si option 1 
-        # lancer jeu
-    # si option 2
-        # Montrer classement 
-    # si option 3 
-        # fermer jeu 
+def display_header():
+    game_name = ""
+    print(f"Bienvenue sur {game_name}")
 
-# Jeu : 
-    # get_user_name() 
-    # Créé une equipe de 3 heros
-    # Lancer un combat
-    # Enregistrer les données (vague + pseudo) 
+def display_option():
+    print("Option 1 : Jouer/nOption 2 : Classement des 3 meilleurs joueurs/nOption 3 : Quitter/n")
 
-# get_user_name :
-    # input_pseudo = false
-    # Tant que input_pseudo est faux 
-        # pseudo = Demander d'entrer un pseudo 
-        # input_pseudo = Vérifier que l'entré soit valide
-    # retourner pseudo
+def get_choice(min, max):
+    choix = False
+    while choix == False :
+        choice = input("Que voulez vous faire ?")
+        choix = is_valid_choice(choice, min, max)
+    return choice
 
-# is_valid_input(pseudo):
-    # Si l'input est un chiffre 
-        # Demander d'entrer un nom
-        # retourner false
-    # Si la taille de l'input est < 3 et > 10
-        # demander un nom de minimum 3 lettre et maximum 10 lettres
-        # retourner false
-    # Sinon 
-        # retourner True
+def is_valid_choice(choice, min, max):
+    if choice.isdigit():
+        if choice < min or choice > max:
+            return False
+        return True
+    else:
+        print("Vueillez entrer un chiffre")
+        return False
+
+def run_option(choice):
+    if choice == 1:
+        play()
+    if choice == 2:
+        display_top_three()
+    if choice == 3:
+        close_game()
+
+def play():
+    username = get_user_name()
+    create_team()
+    wave = start_battle()
+    save_data(wave, username)
+
+def get_user_name():
+    input_username = False
+    while input_username == False:
+        username = input("Vueillez entrer un pseudo")
+        input_username = is_valide_input(username)
+    return username
+
+def is_valid_input(username):
+    if username.isdigit():
+        print("Vueillez entrer des lettres")
+        return False
+    if len(username) < 3 or len(username) > 10:
+        print("Votre nom doit comporter au minimum 3 lettres et au maximum 10")
+        return False
+    else:
+        return True
+
+def create_team():
+    team = []
+    team_size = 3
+    while len(team) < team_size:
+        print(team)
+        display_list_heros()
+        get_choice() # TODO min max
 
 # créer_equipe :
     # team = []
     # definir la taille de l'equipe
     # tant que l'equipe n'est pas complete
-        # Afficher liste persos_actuels
+        # Afficher team
+        # Afficher liste persos_dispos
         # recuperer un choix valide
         # caractère = perso de l'index choix-1
         # ajouter le caractère à la team
-        # le supprimer le caractère de la liste persos_actuels
+        # le supprimer le caractère de la liste persos_dispos 
     # retourner team
 
 # Afficher liste persos :
-    # persos_actuels = heros
+    # persos_dispos = heros
     # i = 1
     # Pour chaque perso dans persos
         # afficher i
         # afficher nom, atk, def, pv du perso
         # i+= 1
-    # retourner persos_actuels
+    # retourner persos_dispos
 
 # combat(team) :
     # vague = 0
@@ -168,7 +186,11 @@
 
 # get_leaderboard
     # recuperer le classement dans la db
-    # trier le classement par score TODO ?
+    # trier le classement par score 
+
+# sort_leaderboard(leaderboard)
+    # leaderboard = leaderboard.sort()
+    # return leaderboar 
 
 # close_game
     # sys.exit()

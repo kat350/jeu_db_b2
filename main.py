@@ -9,9 +9,11 @@ db = client["jeu"]
 
 def import_heros() :
     heros = db["persos"]
+    return heros
 
 def import_monsters():
     monsters = db["monstres"]
+    return monsters
 
 def main():
     display_menu()
@@ -83,22 +85,23 @@ def is_valid_input(username):
 def create_team():
     team = []
     team_size = 3
+    available_heroes = display_list_heros()
     while len(team) < team_size:
-        print(team)
-        display_list_heros()
-        get_choice() # TODO min max
+        print(available_heroes)
+        print(f"Votre team est {team}")
+        choice = get_choice(1, len(available_heroes)) 
+        character = available_heroes[choice - 1]
+        team.append(character)
+        available_heroes.pop(choice-1)  
+    return team
 
-# créer_equipe :
-    # team = []
-    # definir la taille de l'equipe
-    # tant que l'equipe n'est pas complete
-        # Afficher team
-        # Afficher liste persos_dispos
-        # recuperer un choix valide
-        # caractère = perso de l'index choix-1
-        # ajouter le caractère à la team
-        # le supprimer le caractère de la liste persos_dispos 
-    # retourner team
+def display_list_heros():
+    available_heroes = import_heros()
+    i = 1
+    for hero in available_heroes:
+        print(f"{i} : ")
+        print(f"{hero['name']}, ATK: {hero['ATK']}, DEF: {hero['DEF']}, PV: ")
+    return available_heroes
 
 # Afficher liste persos :
     # persos_dispos = heros

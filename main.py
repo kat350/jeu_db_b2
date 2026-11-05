@@ -69,7 +69,7 @@ def get_user_name():
     input_username = False
     while input_username == False:
         username = input("Vueillez entrer un pseudo")
-        input_username = is_valide_input(username)
+        input_username = is_valid_input(username)
     return username
 
 def is_valid_input(username):
@@ -115,84 +115,85 @@ def start_battle(team):
 def start_round(team):
     team_alive = team_alive(team)
     monster = get_random_monster()
+    display_info_monster(monster)
+    while monster['PV'] > 0 and len(team_alive()) > 0 :
+        combat_turn(monster)
+    if len(team_alive()) >  0 :
+        return True
+
+def get_random_monster() :
+    monsters = import_monsters()
+    monster = random.choice(list(monsters.items()))
+    return monster
+
+def display_info_monster(monster) :
     print(f"{monster['name']} apparait ! ATK: {monster['ATK']}, DEF: {monster['DEF']}, PV: {monster['PV']}")
-    while monster['PV'] and len(team_alive()) > 0 :
-        combat_turn()
 
-# round :
-    # Choisir un monstre aléatoirement parmis la liste de monstres 
-    # Afficher le nom du monstre et ses infos 
-    # Tant que le monstre est en vie et equipe en vie  :
-        # tour de combat
-    
-    # si equipe est en vie
-        # return true
 
-# get_random_monster
-    # monster = choisir aleatoirement un monstre dans monstres
-    # retourner monster
-
-# display_info_monster:
-    # Afficher nom, atk, def, pv du monstre
 
 # print_monster_name(monster) :
     # 
 
-
-# tour de combat :
-    # recuperer les persos vivant
-    # Les persos vivant attaquent le monstre 
-    # Vérifier que le monstre est encore en vie
-    # Si monstre en vie
-        # Monstre attaque 
-
-# Verifier_pv_monstre :
-    # Si les pv du monstre sont positif
-        # Retourner pv du monstre
-    # Sinon 
-        # retourner que le monstre est mort
+def combat_turn(monster) :
+    heros_alive = team_alive()
+    team_attack(heros_alive, monster)
+    monster_alive = monster_is_alive(monster)
+    if monster_alive is True :
+        monster_attack(heros_alive)
 
 
-# Verifier_pv_perso :
-    # Si les pv du perso sont positif
-        # Retourner pv perso
-    # Sinon 
-        # Afficher "le perso est mort"
-        # Supprimer le perso de team_alive
+def monster_is_alive(monster) :  
+    if monster['PV']  > 0 :
+        return True
+    else :
+        return False
 
-# Persos_attaque :
+def hero_is_alive(team) :
+    for hero in team :
+        if hero['PV'] > 0 :
+            return True
+        else:
+            print(f"{hero['name']} est mort")
+            return False
+
+def team_attack(team_alive, monster) : 
+    for hero in team_alive:
+        attack(hero, monster)
+
+def monster_attack(monster, team) :
+    random_hero = get_random_hero(team)
+    attack(monster, random_hero)
+
+def attack(attacker, opponent) :
+    degat = attacker['ATK'] - opponent['DEF']
+    opponent['PV'] -= degat
+
+def team_alive(team) :
+    team_alive = []
+    for hero in team :
+        if hero['PV'] <= 0 :
+            continue
+        else :
+            team_alive.append(hero)
+        return team_alive
     
-    # Pour tous les persos parmis team_alive
-        # attaque(hero, monstre)
+def get_random_hero(team) :
+    random_hero = random.choice(list(team.items()))
+    return random_hero
 
-# monstre_attaque :
-    # choisir aléatoirement le perso a attaquer
-    # attaque(monstre, perso_aleatoire)
+def display_top_three() : 
+    learderboard = get_leaderboard()
+    top_three =  [learderboard[0], learderboard[1], learderboard[2]]
+    print(top_three)
 
-# attaque(attaquant, opposant) :
-    # degat = atk attaquant - def opposant 
-    # pv opposant -= degat
+def get_leaderboard():
+    leaderboard = db['leaderboard']
+    leaderboard = sort_leaderboard(leaderboard)
+    return leaderboard
 
-# team_alive(team) :
-    # team_alive = []
-    # Pour chaque perso dans team
-    # Si pv perso <= 0
-        # continuer
-    # Sinon :
-        # ajouter a team_alive
-    # return team_alive
-
-# Display_top_three
-    # recuperer le classement trier par score 
-    # afficher les trois premiers de la liste
-
-# get_leaderboard
-    # recuperer le classement dans la db
-    # trier le classement par score 
-
-# sort_leaderboard(leaderboard)
-    # leaderboard = leaderboard.sort()
-    # return leaderboar 
+def sort_leaderboard(leaderboard) :
+    sorted_leaderboard = leaderboard.sort(reverse=True)
+    return sorted_leaderboard
 
 # close_game
     # sys.exit()
@@ -203,3 +204,4 @@ def start_round(team):
 
 # New_player(pseudo, vague)
     # player = {"name" = pseudo, "score" = vague}
+

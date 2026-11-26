@@ -1,24 +1,6 @@
 from entity import Entity
 
-
 class Character(Entity):
-
-
-    @property
-    def attack(self):
-        self._attack = super().attack
-        if self.equipment:
-            for item in self.equipment:
-                self._attack += item.attack
-            return self._attack
-        else:
-            return self._attack
-
-
-    @property
-    def defense(self):
-        return self._defense
-
     
     def __init__(self, name, hp, attack, defense, equipment=None):
         super().__init__(name, hp, attack, defense)
@@ -28,6 +10,22 @@ class Character(Entity):
         else:
             self.equipment = list(equipment)
 
+    @property
+    def attack(self):
+        self._attack = super().attack
+        if self.equipment:
+            for item in self.equipment:
+                self._attack += item.attack
+        return self._attack
+
+    @property
+    def defense(self):
+        self._defense = super().defense
+        if self.equipment:
+            for item in self.equipment:
+                self._defense += item.defense
+        return self._defense
+    
     def is_slot_available(self, slot):
         for item in self.equipment:
             if item.slot == slot:
@@ -56,6 +54,10 @@ class Character(Entity):
             print(f"{self.name} unequips {item.name}!")
         else:
             print(f"{self.name} does not have {item.name} equipped.")
+
+    def play_turn(self, entity):
+        # ouvrir inventaire
+        self.attack(entity)
 
     
     

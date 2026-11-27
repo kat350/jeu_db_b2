@@ -32,9 +32,9 @@ class Game:
 
 
     def load_game(self):
-        save = self.db['saves'].find_one({"player.name": self.player.name})
-
         # Load player data
+        save = self.db['saves'].find_one({"player.name": self.player.name})
+        
         # regarder mongo et aller chercher chaque data pour reconstruire l'environment de jeu
 
     def launch_game(self):
@@ -45,7 +45,7 @@ class Game:
             self.player.name = input("Entrez votre nom : ")
             self.player.create_team()
             while self.player.is_team_alive():
-                self.vague.pick_enemies()
+                self.vague.pick_enemies(self, self.db)
                 return_code = self.vague.play_vague()
                 if return_code == -1:
                     self.save_game()
@@ -59,6 +59,12 @@ class Game:
             index_sauvegarde = Affichage.display(VueChargerSauvegarde())
             find_saves = self.db['saves'].find({"player.name": self.player.name})
             self.load_game(find_saves[index_sauvegarde])
+            while self.player.is_team_alive():
+                self.vague.pick_enemies()
+                return_code = self.vague.play_vague()
+                if return_code == -1:
+                    self.save_game()
+                    break
             self.db['saves'].delete_one({"player.name": self.player.name})
             self.db['scores'].insert_one({"player.name": self.player.name, "score": self.player.score})
             Affichage.display(VueGameOver(self.player.score))

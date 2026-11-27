@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 
 from affichage import Affichage
+from enemy import Enemy
 from player import Player
 from vague import Vague
 
@@ -31,11 +32,12 @@ class Game:
             )
 
 
-    def load_game(self):
+    def load_game(self, find_save):
         # Load player data
         save = self.db['saves'].find_one({"player.name": self.player.name})
-        
         # regarder mongo et aller chercher chaque data pour reconstruire l'environment de jeu
+        data = save['player']
+        return data
 
     def launch_game(self):
         index_choix = Affichage.display(VueEcranTitre())
@@ -65,6 +67,8 @@ class Game:
                 if return_code == -1:
                     self.save_game()
                     break
+                elif return_code == 1:
+                    Enemy.drop_items()
             self.db['saves'].delete_one({"player.name": self.player.name})
             self.db['scores'].insert_one({"player.name": self.player.name, "score": self.player.score})
             Affichage.display(VueGameOver(self.player.score))
@@ -75,5 +79,6 @@ class Game:
 
         elif index_choix == 3:
             Affichage.display(VueQuitter())
+
         
     

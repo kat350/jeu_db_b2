@@ -1,4 +1,5 @@
 from entity import Entity
+from vague import Vague
 
 class Character(Entity):
     
@@ -55,9 +56,10 @@ class Character(Entity):
         else:
             print(f"{self.name} does not have {item.name} equipped.")
 
-    def play_turn(self, entity):
+    def play_turn(self, monsters):
+        ennemy = Vague.get_enemy(self, monsters)
         # ouvrir inventaire
-        self.attack(entity)
+        self.attack(ennemy)
 
     
     

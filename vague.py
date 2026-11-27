@@ -10,9 +10,9 @@ class Vague():
     def is_alive(cls,entities):
         return any(entity.is_alive() for entity in entities)
 
-    def pick_enemy(self):
-        monster_alive = [monster for monster in self.monsters if monster.is_alive()]
-        Affichage.display(vue_choix_cible(monster_alive))
+    def pick_enemies(self):
+        TODO
+
 
     def play_vague(self):
         while Vague.is_alive(self.monsters) and Vague.is_alive(self.team):

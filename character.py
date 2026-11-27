@@ -1,3 +1,4 @@
+from affichage import Affichage
 from entity import Entity
 from vague import Vague
 
@@ -10,22 +11,33 @@ class Character(Entity):
             self.equipment = []
         else:
             self.equipment = list(equipment)
+        self._attack = super().attack
+        self._defense = super().defense
+
 
     @property
     def attack(self):
-        self._attack = super().attack
+        attaque_totale = self._attack
         if self.equipment:
             for item in self.equipment:
-                self._attack += item.attack
-        return self._attack
+                attaque_totale += item.attack
+        return attaque_totale
+
+    @attack.setter
+    def attack(self, value):
+        self._attack = value
 
     @property
     def defense(self):
-        self._defense = super().defense
+        defense_totale = self._defense
         if self.equipment:
             for item in self.equipment:
-                self._defense += item.defense
-        return self._defense
+                defense_totale += item.defense
+        return defense_totale
+
+    @defense.setter
+    def defense(self, value):
+        self._defense = value
     
     def is_slot_available(self, slot):
         for item in self.equipment:
@@ -42,24 +54,19 @@ class Character(Entity):
         return None
 
     def equip_item(self, item):
-        if not self.is_slot_available(item.slot):
-            to_remove = self.get_equipment(item.slot)
-            if to_remove:
-                self.unequip_item(to_remove)
-        else:
-            self.equipment.append(item)
-
+        existing_item = self.get_equipment(item.slot)
+        if existing_item:
+            self.unequip_item(existing_item)
+        self.equipment.append(item)
+        
     def unequip_item(self, item):
         if item in self.equipment:
             self.equipment.remove(item)
-            print(f"{self.name} unequips {item.name}!")
-        else:
-            print(f"{self.name} does not have {item.name} equipped.")
 
     def play_turn(self, monsters):
-        ennemy = Vague.get_enemy(self, monsters)
-        # ouvrir inventaire
-        self.attack(ennemy)
+        index_cible = Affichage.display(vue_choix_cible(monsters))
+        damage = self.attaquer(monsters[index_cible])
+        return (monsters[index_cible], damage)  # Return the attacked monster and the damage dealt
 
-    
+
     

@@ -1,3 +1,7 @@
+from affichage import Affichage
+from vue import VueSelectionEquipe
+
+
 class Player():
     def __init__(self, name, score, team, inventory):
         self.name = name
@@ -14,19 +18,22 @@ class Player():
         return self.team
 
     def pick_character(self, list_characters):
-        choix = Affichage.display(vue_selection_equipe(self.team, list_characters))
+        choix = Affichage.display(VueSelectionEquipe(self.team, list_characters))
         return list_characters[choix]
         
     def is_team_alive(self):
         return any(character.is_alive() for character in self.team)
 
     def check_inventory(self):
-        item = Affichage.display(vue_inventaire(self.inventory))
-        if item in self.inventory:
-            return item
+        while True:
+            item = self.pick_item()
+            if item is None:
+                break
+            character = self.pick_character(self.team)
+            self.use_item(item, character)
 
     def use_item(self, item, character):
-        if item.consumable:
+        if type(item) == Consumable:
             item.effect(character)
             self.inventory.remove(item)
         else:

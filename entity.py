@@ -14,7 +14,7 @@ class Entity(ABC):
     def is_alive(self):
         return self.hp > 0
 
-    def attack(self, entity):
+    def attaquer(self, entity):
         damage = max(1, self.attack - entity.defense)
         entity.take_damage(damage)
 

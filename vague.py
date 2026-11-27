@@ -23,10 +23,20 @@ class Vague():
                         break
             for character in self.team:
                 if character.is_alive():
-                    character.play_turn(self.monsters)
-                    if not Vague.is_alive(self.monsters):
+                    choix = Affichage.display(vue_choix_action(character))
+                    if choix == 0:  # Attack
+                        character.play_turn(self.monsters)
+                    elif choix == 1:  # Use Item
+                        character.use_item()
+                    else:  # Flee
+                        return_code = -1
                         break
-        self.vague_actuelle += 1
+        if not Vague.is_alive(self.team):
+            return_code = 0  # Team defeated
+        elif not Vague.is_alive(self.monsters):
+            return_code = 1  # Monsters defeated
+            self.vague_actuelle += 1
+        return return_code
 
     def get_difficulty(self):
         # lap = vague_actuelle // end_number le plus grand
